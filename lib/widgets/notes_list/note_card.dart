@@ -41,76 +41,70 @@ class _NoteCardState extends State<NoteCard> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.border, width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.seed.withValues(alpha: _hovered ? 0.10 : 0.04),
-                blurRadius: _hovered ? 16 : 6,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
+            ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Colored left accent bar
-                  AnimatedContainer(
-                    duration: AppMotion.fast,
-                    width: 5,
-                    color: accentColor,
-                  ),
                   // Content
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 14, 8, 14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Title + delete icon row
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.note.title,
-                                  style:
-                                      Theme.of(context).textTheme.titleLarge,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                    child: AnimatedContainer(
+                      duration: AppMotion.fast,
+                      color: accentColor,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 14, 8, 14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Title + delete icon row
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    widget.note.title,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleLarge,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
+                                const SizedBox(width: 4),
+                                _DeleteButton(onDelete: widget.onDelete),
+                              ],
+                            ),
+                            if (widget.note.description.isNotEmpty) ...[
+                              const SizedBox(height: 6),
+                              Text(
+                                widget.note.description,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(width: 4),
-                              _DeleteButton(onDelete: widget.onDelete),
                             ],
-                          ),
-                          if (widget.note.description.isNotEmpty) ...[
-                            const SizedBox(height: 6),
-                            Text(
-                              widget.note.description,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
+                            const SizedBox(height: 10),
+                            // Timestamp
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.access_time_rounded,
+                                  size: 11,
+                                  color: AppColors.textSecondary.withValues(
+                                    alpha: 0.7,
+                                  ),
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  formatNoteDate(widget.note.updatedAt),
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                              ],
                             ),
                           ],
-                          const SizedBox(height: 10),
-                          // Timestamp
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.access_time_rounded,
-                                size: 11,
-                                color: AppColors.textSecondary.withValues(alpha: 0.7),
-                              ),
-                              const SizedBox(width: 3),
-                              Text(
-                                formatNoteDate(widget.note.updatedAt),
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
