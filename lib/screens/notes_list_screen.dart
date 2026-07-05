@@ -37,9 +37,7 @@ class NotesListScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // App bar area
-            _AppHeader(
-              onNewNote: () => _showNoteSheet(context),
-            ),
+            _AppHeader(onNewNote: () => _showNoteSheet(context)),
             // Search bar
             const NotesSearchBar(),
             const SizedBox(height: 12),
@@ -100,9 +98,9 @@ class NotesListScreen extends StatelessWidget {
     if (!context.mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Note deleted')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Note deleted')));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -187,9 +185,7 @@ class _NotesGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         final note = notes[index];
         // Staggered fade+slide in — capped at index 10 so long lists stay snappy
-        final delay = Duration(
-          milliseconds: (index.clamp(0, 10) * 40),
-        );
+        final delay = Duration(milliseconds: (index.clamp(0, 10) * 40));
         return _StaggeredCard(
           delay: delay,
           child: NoteCard(
@@ -269,9 +265,7 @@ class _NoteSheetState extends State<_NoteSheet> {
   @override
   void initState() {
     super.initState();
-    _titleCtrl = TextEditingController(
-      text: widget.existingNote?.title ?? '',
-    );
+    _titleCtrl = TextEditingController(text: widget.existingNote?.title ?? '');
     _descCtrl = TextEditingController(
       text: widget.existingNote?.description ?? '',
     );
@@ -331,77 +325,80 @@ class _NoteSheetState extends State<_NoteSheet> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(24, 0, 24, viewInsets.bottom + 24),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Drag handle
-            Center(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 12),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.border,
-                  borderRadius: BorderRadius.circular(2),
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Drag handle
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-            ),
-            // Title
-            Text(
-              _isEditing ? 'Edit Note' : 'New Note',
-              style: GoogleFonts.nunito(
-                fontWeight: FontWeight.w800,
-                fontSize: 20,
-                color: AppColors.textPrimary,
-                letterSpacing: -0.3,
+              // Title
+              Text(
+                _isEditing ? 'Edit Note' : 'New Note',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                  color: AppColors.textPrimary,
+                  letterSpacing: -0.3,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            // Title field
-            NoteFormField(
-              controller: _titleCtrl,
-              label: 'Title',
-              hint: 'Give your note a title…',
-              autofocus: !_isEditing,
-              validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? 'Title is required' : null,
-            ),
-            const SizedBox(height: 14),
-            // Description field
-            NoteFormField(
-              controller: _descCtrl,
-              label: 'Description',
-              hint: 'Write something…',
-              maxLines: 5,
-              minLines: 3,
-              textInputAction: TextInputAction.newline,
-            ),
-            const SizedBox(height: 20),
-            // Color picker
-            Text(
-              'Color',
-              style: GoogleFonts.nunito(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-                color: AppColors.textSecondary,
+              const SizedBox(height: 20),
+              // Title field
+              NoteFormField(
+                controller: _titleCtrl,
+                label: 'Title',
+                hint: 'Give your note a title…',
+                autofocus: !_isEditing,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Title is required'
+                    : null,
               ),
-            ),
-            const SizedBox(height: 10),
-            ColorPickerRow(
-              selectedColorValue: _selectedColorValue,
-              onColorSelected: (v) => setState(() => _selectedColorValue = v),
-            ),
-            const SizedBox(height: 24),
-            // Save button
-            SaveButton(
-              onPressed: () => _save(context),
-              isSaving: isSaving,
-              label: _isEditing ? 'Update Note' : 'Save Note',
-            ),
-          ],
+              const SizedBox(height: 14),
+              // Description field
+              NoteFormField(
+                controller: _descCtrl,
+                label: 'Description',
+                hint: 'Write something…',
+                maxLines: 5,
+                minLines: 3,
+                textInputAction: TextInputAction.newline,
+              ),
+              const SizedBox(height: 20),
+              // Color picker
+              Text(
+                'Color',
+                style: GoogleFonts.nunito(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 10),
+              ColorPickerRow(
+                selectedColorValue: _selectedColorValue,
+                onColorSelected: (v) => setState(() => _selectedColorValue = v),
+              ),
+              const SizedBox(height: 24),
+              // Save button
+              SaveButton(
+                onPressed: () => _save(context),
+                isSaving: isSaving,
+                label: _isEditing ? 'Update Note' : 'Save Note',
+              ),
+            ],
+          ),
         ),
       ),
     );
