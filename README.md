@@ -1,6 +1,15 @@
+
+
+![Flutter](https://img.shields.io/badge/Flutter-3.44-blue)
+![Firebase](https://img.shields.io/badge/Firebase-Connected-orange)
+![State Management](https://img.shields.io/badge/State-Provider-blueviolet)
+![Database](https://img.shields.io/badge/Database-Firestore-orange)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey)
+![CRUD](https://img.shields.io/badge/CRUD-Implemented-brightgreen)
 # Notes Management App
 
-A modern, responsive Notes Management application built with Flutter and Firebase. 
+A modern, responsive **Notes Management Application** built with **Flutter and Firebase Firestore**, featuring real-time synchronization, clean UI, and full CRUD functionality.
+
 
 ## Features
 - **Clean UI/UX:** Material 3 design with soft color palettes and subtle animations.
@@ -15,6 +24,24 @@ A modern, responsive Notes Management application built with Flutter and Firebas
 - **Database:** Cloud Firestore (Firebase)
 - **Fonts:** Google Fonts (Nunito)
 - **UI Grid:** flutter_staggered_grid_view
+
+## Folder Structure
+
+```text
+notes_management_app/
+├── lib/
+│   ├── main.dart            # Firebase init, Provider, AppTheme, NotesListScreen
+│   ├── models/              # NoteModel
+│   ├── services/            # FirestoreService (CRUD operations)
+│   ├── providers/           # NotesProvider (State management, search)
+│   ├── theme/               # AppColors, AppTheme (Material 3)
+│   ├── screens/             # NotesListScreen
+│   ├── widgets/
+│   │   ├── common/          # ConfirmDeleteDialog
+│   │   ├── notes_list/      # NoteCard, NotesSearchBar, EmptyNotesView, NotesListLoading
+│   │   └── add_edit/        # NoteFormField, ColorPickerRow, SaveButton
+│   └── utils/               # Constants, AppMotion, NoteColors, DateTimeHelper
+```
 
 ## Firestore Schema
 
@@ -63,7 +90,14 @@ Shows search functionality with no-result and match states, along with secure de
 
 ## How to Run
 
-1. **Clone the repository.**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/jannatulferdous2730/notes_management_app.git
+   ```
+
+   ```bash
+   cd notes_management_app
+   ```
 2. **Install dependencies:**
    ```bash
    flutter pub get
